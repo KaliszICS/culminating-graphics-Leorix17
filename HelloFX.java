@@ -49,17 +49,18 @@ public class HelloFX extends Application {
         gameLay.getChildren().add(player);
 
         Double[] velocityY = {0.0}; 
-        Double gravity = 1.0;
+        Double gravity = 0.5;
         
-        player.setOnKeyPressed(event -> {
+        scene.setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.SPACE) {
-                        velocityY[0] = -12.0;
+                        velocityY[0] = -10.0;
                     }
         AnimationTimer gameLoop = new AnimationTimer() { //game loop to constantly check and update player position 
             @Override //replace handle method
             public void handle(long now) {
                 velocityY[0] += gravity;
                 player.setY(player.getY() + velocityY[0]);
+                
                 }
             };
         gameLoop.start();
