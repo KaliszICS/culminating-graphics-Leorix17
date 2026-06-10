@@ -31,60 +31,82 @@ import java.util.ArrayList;
 public class HelloFX extends Application {
 
     AnimationTimer gameLoop;
-
+    int[] attempts = {1};
+    double[] percentage = {0};
     // menu screen method
     private Scene menuScreen(Stage stage) {
-        VBox menuLay = new VBox(20);
-        Scene scene = new Scene(menuLay, 800, 500);
-        Text title = new Text("Leledash");
-        menuLay.setAlignment(Pos.CENTER);
+        VBox menuLay = new VBox(20); //use VBox as the root
+        Scene scene = new Scene(menuLay, 800, 500); //create the scene
+        Text title = new Text("Leledash"); //create text
+        title.setFont(Font.font("Arial", 50)); //change size and font of the text
+        menuLay.setAlignment(Pos.CENTER); //position everything in the center of the screen with VBox
 
-        // add buttons on the menu screen
-        Button startBtn = new Button("Start Game");
-        // switch to game screen when start button is pressed
-        startBtn.setOnAction(e -> stage.setScene(gameScreen(stage)));
-        Button instructionsBtn = new Button("How to play");
+        Button startBtn = new Button("Start Game");// add buttons on the menu screen
+        startBtn.setOnAction(e -> stage.setScene(gameScreen(stage)));// switch to game screen when start button is pressed
+        Button instructionsBtn = new Button("How to play");//switch to instructions screen when pressed
+        instructionsBtn.setOnAction(e -> stage.setScene(instructionsScreen(stage)));
         Button leaderboardBtn = new Button("Leaderboard");
         menuLay.getChildren().addAll(title, startBtn, instructionsBtn, leaderboardBtn); // adds all nodes to the scene
-        title.setFont(Font.font("Arial", 50));
+        
         return scene;
     }
 
-    private Scene deathScreen(Stage stage) {
-        Pane deathLay = new Pane();
+    private Scene deathScreen(Stage stage) { //death screen method
+        VBox deathLay = new VBox(20); //VBox as root
         Scene scene = new Scene(deathLay, 800, 500);
+        Text attemptsTxt = new Text("Attempts: " + attempts[0]); //add text
         Button retryBtn = new Button("Retry");
-        deathLay.getChildren().add(retryBtn);
-        retryBtn.setOnAction(e -> stage.setScene(gameScreen(stage)));
+        retryBtn.setOnAction(e -> stage.setScene(gameScreen(stage))); //restart when button is clicked
+        deathLay.setAlignment(Pos.CENTER);
+        deathLay.getChildren().addAll(retryBtn,attemptsTxt);//add nodes
+        
         return scene;
     }
 
-    private Scene winScreen(Stage stage) {
+    private Scene winScreen(Stage stage) { //win screen method
         VBox winLay = new VBox(20);
-        Scene scene = new Scene(winLay, 1080, 1920);
-        Button startBtn = new Button("Start Game");
-
+        Scene scene = new Scene(winLay, 800, 500);
         Text winMsg = new Text("LEVEL COMPLETE");
-        Text attempts = new Text();
-        winLay.setAlignment(Pos.CENTER);
+        Button retryBtn = new Button("Play Again");
+
+        Text attemptsTxt = new Text("Attempts: " + attempts[0]); //show attempts on the screen
+        winLay.getChildren().addAll(winMsg,retryBtn,attemptsTxt);
+        winLay.setAlignment(Pos.CENTER);//center it
+        return scene;
     }
 
+    private Scene instructionsScreen(Stage stage) { //instructions screen method
+        VBox insLay = new VBox(20);
+        Scene scene = new Scene(insLay, 800, 500);
+        Text insTxt = new Text("How to play?\nPress spacebar to jump. Time your jumps to avoid the red killbricks AKA spikes.\nMake it to the end of the level to win.\nHave fun!");
+        Button menuBtn = new Button("Main Menu");
+        menuBtn.setOnAction(e -> stage.setScene(menuScreen(stage)));//back to menu when button pressed
+        insLay.getChildren().addAll(insTxt,menuBtn);
+        insLay.setAlignment(Pos.CENTER);
+        return scene;
+    }
 
     private Scene gameScreen(Stage stage) { //game screen method
         Pane gameLay = new Pane(); //pane root for easier positioning of elements 
         Scene scene = new Scene(gameLay,800,500);
-        gameLay.setStyle("-fx-background-color: ADD8E6");
+        gameLay.setStyle("-fx-background-color: ADD8E6");//change colour of the pane
+        Text attemptsTxt = new Text("Attempt: " + attempts[0]);
+        Text percentageTxt = new Text("Percent: " + percentage[0]);
+        attemptsTxt.setX(20);//position attempts at top left
+        attemptsTxt.setY(30);
+        percentageTxt.setX(600);//position percentage at the top middle
+        percentageTxt.setY(30);
         
         //player setup
-        Rectangle player = new Rectangle(50,50, Color.BLACK);
-        player.setX(100);
+        Rectangle player = new Rectangle(50,50, Color.BLACK); //create the player 
+        player.setX(100);//position player near the left of the screen
         player.setY(300);
 
-        Rectangle ground = new Rectangle(1920,250, Color.GREEN);
+        Rectangle ground = new Rectangle(1920,250, Color.GREEN); //create the ground
         ground.setX(0);
         ground.setY(400);
 
-        gameLay.getChildren().addAll(player,ground);
+        gameLay.getChildren().addAll(player,ground,attemptsTxt,percentageTxt);
 
         double groundY = 350;
         double[] velocityY = {0.0}; 
@@ -112,11 +134,11 @@ public class HelloFX extends Application {
         Rectangle spike7 = new Rectangle(100,40,Color.RED);
         Rectangle spike8 = new Rectangle(100,40,Color.RED);
         Rectangle spike9 = new Rectangle(100,40,Color.RED);
-        Rectangle spike10 = new Rectangle(1600,40,Color.RED);
+        Rectangle spike10 = new Rectangle(1700,40,Color.RED);
         Rectangle spike11 = new Rectangle(40,40,Color.RED);
         Rectangle spike12 = new Rectangle(115,40,Color.RED);
-        Rectangle spike13 = new Rectangle(100,40,Color.RED);
-        Rectangle spike14 = new Rectangle(100,40,Color.RED);
+        Rectangle spike13 = new Rectangle(115,40,Color.RED);
+        Rectangle spike14 = new Rectangle(115,40,Color.RED);
         Rectangle plat1 = new Rectangle(200,20,Color.GREEN);
         Rectangle plat2 = new Rectangle(200,20,Color.GREEN);
         Rectangle plat3 = new Rectangle(100,20,Color.GREEN);
@@ -194,7 +216,7 @@ public class HelloFX extends Application {
         platforms.add(plat6);
         platforms.add(plat7);
         
-        int[] attempts = {1};
+        
 
         
         
@@ -220,6 +242,7 @@ public class HelloFX extends Application {
 
                 for (Rectangle i : spikes) {
                     i.setX(i.getX() - 5);
+                    
                 }
                 for (Rectangle i : platforms) {
                     i.setX(i.getX() - 5);
@@ -230,6 +253,7 @@ public class HelloFX extends Application {
                         gameLoop.stop(); 
                         stage.setScene(deathScreen(stage));
                         attempts[0]++;
+                        percentage[0] = 0;
                     }
                 }
 
@@ -241,7 +265,12 @@ public class HelloFX extends Application {
                     }
                 }
 
-                if (player.getX() == 8000) {
+                percentage[0] += 0.05;
+                percentageTxt.setText("Percent: " + Math.round(percentage[0]) + "%");
+
+                if (spike14.getX() <= -100) {
+                    gameLoop.stop();
+                    stage.setScene(winScreen(stage));
 
                 }
             }
@@ -263,6 +292,7 @@ public class HelloFX extends Application {
         Scene menu = menuScreen(stage);
         stage.setScene(menu);
         stage.show();
+
 
     }
 
