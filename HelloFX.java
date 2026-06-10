@@ -319,7 +319,7 @@ public class HelloFX extends Application {
                 percentageTxt.setText("Percent: " + Math.round(percentage[0]) + "%");//changes percentage on game screen every frame
 
                 if (spike18.getX() <= -200) { //checks when the last spike passes the player 
-                    leaderboard.add("Attempt: " + attempts[0] + " - " + Math.round(percentage[0]) + "%");
+                    leaderboard.add("Attempt: " + attempts[0] + " - 100%");
                     gameLoop.stop();
                     stage.setScene(winScreen(stage));
 
