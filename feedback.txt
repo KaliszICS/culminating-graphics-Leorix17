@@ -1,0 +1,11 @@
+K(30%): 100
+I(30%): 90
+C(10%): 100
+A(30%): 100
+97%
+
+Great work Leo.  I would suggest a couple things the future.
+Use a data structure to create and store your rectangles and assets so you don't have tons of variables.
+This will also be easier to use after and add since you can just use a loop.
+The game runs almost flawlessly, one small thing.  When they win the progress starts at 100% if they play again.
+I would also suggest more method use to split up your code and make the main section easier to read.
